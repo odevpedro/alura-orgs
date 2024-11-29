@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 
 
 class MainActivity : Activity() {
@@ -14,25 +15,35 @@ class MainActivity : Activity() {
         val view = TextView(this)
         setContentView(R.layout.activity_main)
 
-        //Abrindo link especifico com o navegador
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.setData(Uri.parse("https://www.google.com"))
-        startActivity(intent)
 
-        //abrindo aplicação de mensagem com o texto
-        val intent2 = Intent(Intent.ACTION_SEND)
-        intent2.setType("text/plain")
-        intent2.putExtra(Intent.EXTRA_TEXT, "Olá, isso é uma mensagem!")
-        startActivity(Intent.createChooser(intent, "Compartilhar via"))
+        //enviando email com texto especifico
+
+        val userName = "João"
+        val intent3 = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain" // Define o tipo de dado como texto
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("exemplo@email.com")) // Define o destinatário
+            putExtra(Intent.EXTRA_SUBJECT, "Assunto do e-mail") // Define o assunto
+            putExtra(
+                Intent.EXTRA_TEXT,
+                """
+        Olá $userName, 
+        
+        Esta é uma mensagem personalizada gerada pelo nosso aplicativo.
+        
+        Atenciosamente,
+        Equipe XYZ
+        """.trimIndent()
+            ) // Define o corpo do e-mail
+        }
+
+// Verificar se há aplicativos capazes de lidar com a Intent
+        if (intent3.resolveActivity(packageManager) != null) {
+            startActivity(Intent.createChooser(intent3, "Escolha um aplicativo de e-mail"))
+        } else {
+            Toast.makeText(this, "Nenhum aplicativo de e-mail encontrado", Toast.LENGTH_SHORT).show()
+        }
 
 
-        //envio de email
-        val intent3 = Intent(Intent.ACTION_SENDTO)
-        intent3.setData(Uri.parse("mailto:exemplo@email.com"))
-        intent3.putExtra(Intent.EXTRA_SUBJECT, "Assunto do e-mail")
-        intent3.putExtra(Intent.EXTRA_TEXT, "Corpo do e-mail")
         startActivity(intent3)
-
-
     }
 }
