@@ -8,7 +8,8 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Salada de fruta"
+        tools:text="Salada de fruta"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="84dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
